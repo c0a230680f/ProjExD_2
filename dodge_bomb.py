@@ -42,12 +42,34 @@ def main():
                 sum_mv[1] += v[1]
 
         kk_rct.move_ip(sum_mv)
+        if check_bound(kk_rct) != (True, True): #こうかとんが画面内にいなかったら
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1]) # 更新前の位置に戻す
         screen.blit(kk_img, kk_rct)
+
         bomb_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(bomb_rct)
+        if not yoko: # 爆弾が画面横方向に出たら
+            vx *= -1
+        if not tate: # 爆弾が画面縦方向に出たら
+            vy *= -1
         screen.blit(bomb_img, bomb_rct)
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
+
+def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:
+    """
+    引数：こうかとんRectか爆弾Rect
+    戻り値：真理値タプル（横方向判定結果、縦方向判定結果）
+    画面内ならTrue、画面外ならFalse
+    """
+    yoko, tate = True, True
+    if obj_rct.left < 0 or obj_rct.right > WIDTH: # 横方向判定
+        yoko = False
+    if obj_rct.top < 0 or obj_rct.bottom > HEIGHT: # 縦方向判定
+        tate = False
+    return yoko, tate
 
 
 if __name__ == "__main__":
