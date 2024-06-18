@@ -23,7 +23,7 @@ def main():
     bomb_img = pg.Surface((20, 20)) # 爆弾Surface
     pg.draw.circle(bomb_img,(255, 0, 0), (10, 10), 10)
     bomb_img.set_colorkey((0, 0, 0))
-    bomb_rct = bomb_img.get_rect() #爆弾Rect
+    bomb_rct = bomb_img.get_rect() # 爆弾Rect
     bomb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5 # 爆弾の横方向速度、縦方向速度
     clock = pg.time.Clock()
@@ -32,6 +32,10 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+
+        if kk_rct.colliderect(bomb_rct) == True: # こうかとんが爆弾と衝突したら
+            return # ゲームオーバー    
+        
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
@@ -53,6 +57,7 @@ def main():
         if not tate: # 爆弾が画面縦方向に出たら
             vy *= -1
         screen.blit(bomb_img, bomb_rct)
+        
         pg.display.update()
         tmr += 1
         clock.tick(50)
