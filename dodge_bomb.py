@@ -55,7 +55,6 @@ def main():
         if kk_rct.colliderect(bomb_rct) == True:  # こうかとんが爆弾と衝突したら
             break 
             
-        
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
